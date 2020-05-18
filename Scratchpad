@@ -1,0 +1,31 @@
+_groupReinforcementsInfo =
+[
+	[
+		_group,			// pass the group
+		[
+			[
+				3,		// Only 5 "waves" (5 vehicles can spawn as reinforcement)
+				0
+			],
+			[
+				-1,		// No need to limit the number of units since we're limiting "waves"
+				0
+			]
+		],
+		[
+			300,		// At least a 5 minute delay between reinforcements.
+			diag_tickTime
+		],
+		_pos,	
+		"random",
+		_difficulty,
+		_side,
+		"heli_troopers":
+			_monitorParams =
+			[
+				20,					// SCALAR: If the AI Group has fewer than "_AICount" living units, then the group will receive reinforcements.
+		        false,               // BOOLEAN: Whether or not to eject Fire-From-Vehicle (FFV) gunners.
+		        8,                    // SCALAR: Maximum number of AI to eject from the aircraft. Set to a really high # to ignore (like 999).
+		        false               // BOOLEAN: Whether or not to keep the heli flying around as a gunship.
+				]
+	],
