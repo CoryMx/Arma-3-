@@ -28,9 +28,9 @@ _difficulty = "hardcore";
 //vehicle pin code choice - doing early as its used in win message and vehicle spawn
 _pinCode = (1000 +(round (random 8999)));
 
-_vehicle = ["I_MBT_03_cannon_F",[[20232.6,11632.9,0] select 0, [20232.6,11632.9,0] select 1],_pinCode] call DMS_fnc_SpawnPersistentVehicle;
+_vehicle = ["B_MBT_01_TUSK_F",[[20232.6,11632.9,0] select 0, [20232.6,11632.9,0] select 1],_pinCode] call DMS_fnc_SpawnPersistentVehicle;
 
-_cash = (150000 + round (random (50000)));					//this gives 1000 to 2500 cash
+_cash = (100000 + round (random (50000)));					//this gives 1000 to 2500 cash
 
 // Define spawn locations for AI Soldiers. These will be used for the initial spawning of AI as well as reinforcements.
 // The center spawn location is added 3 times so at least 3 AI will spawn initially at the center location, and so that future reinforcements are more likely to spawn at the center.
@@ -69,7 +69,7 @@ _AISoldierSpawnLocations =
 ];
 
 // Create AI
-_AICount = 15 + (round (random 5));
+_AICount = 18 + (round (random 0));
 
 
 _group =
@@ -107,25 +107,6 @@ _staticGuns =
 	"random"
 ] call DMS_fnc_SpawnAIStaticMG;
 
-_group3 =	[                                                       // Helicopter support group
-				_pos,                 								//heli reinforcements
-				2,
-				"random",
-				"random",
-				_side
-			] call DMS_fnc_SpawnAIGroup;
-			[
-			_group3,
-			"random",
-			"difficulty",
-			_side,
-			_pos,
-			false,
-			0,
-			false,
-			"I_Heli_light_03_dynamicLoadout_F"
-			] call DMS_fnc_SpawnHeliReinforcement;
-			
 // add vehicle patrol 1
 _ai_vehicle = "I_MBT_03_cannon_F"; // Class name of vehicle *Change This*
 _veh =	[
@@ -134,7 +115,7 @@ _veh =	[
 			],
 			_group,
 			"assault",
-			_difficulty,
+			"moderate",
 			_side,
 			_ai_vehicle
 		] call DMS_fnc_SpawnAIVehicle;
@@ -147,20 +128,7 @@ _veh =	[
 			],
 			_group,
 			"assault",
-			_difficulty,
-			_side,
-			_ai_vehicle
-		] call DMS_fnc_SpawnAIVehicle;
-		
-// add Static AAPOD1 
-_ai_vehicle = "CUP_B_Igla_AA_pod_CDF"; // Class name of vehicle *Change This*
-_veh =	[
-			[
-				[20161.3,11650.2,3.69358]
-			],
-			_group,
-			"assault",
-			_difficulty,
+			"difficult",
 			_side,
 			_ai_vehicle
 		] call DMS_fnc_SpawnAIVehicle;
@@ -193,8 +161,7 @@ _crate1 = [_crateClasses_and_Positions select 1 select 1, _crateClasses_and_Posi
 // Define mission-spawned AI Units
 _missionAIUnits =
 [
-	_group, 		// We only spawned the single group for this mission
-	_group3
+	_group		// We only spawned the single group for this mission
 ];
 
 // Define the group reinforcements
@@ -204,7 +171,7 @@ _groupReinforcementsInfo =
 		_group,			// pass the group
 		[
 			[
-				3,		// Only 5 "waves" (5 vehicles can spawn as reinforcement)
+				1,		// Only 2 "waves" (2 vehicles can spawn as reinforcement)
 				0
 			],
 			[
@@ -213,47 +180,53 @@ _groupReinforcementsInfo =
 			]
 		],
 		[
-			300,		// At least a 5 minute delay between reinforcements.
+			120,		// At least a 2 minute delay between reinforcements.
 			diag_tickTime
 		],
 		_pos,	
 		"random",
-		_difficulty,
+		"difficult",
 		_side,
 		"heli_troopers",
             [
-                20,                // SCALAR: If the AI Group has fewer than "_AICount" living units, then the group will receive reinforcements.
-                false,               // BOOLEAN: Whether or not to eject Fire-From-Vehicle (FFV) gunners.
-                8,                    // SCALAR: Maximum number of AI to eject from the aircraft. Set to a really high # to ignore (like 999).
-                false               // BOOLEAN: Whether or not to keep the heli flying around as a gunship.
-                ]
+                30,                					// SCALAR: If the AI Group has fewer than "_AICount" living units, then the group will receive reinforcements.
+                false,             					// BOOLEAN: Whether or not to eject Fire-From-Vehicle (FFV) gunners.
+                999,              					// SCALAR: Maximum number of AI to eject from the aircraft. Set to a really high # to ignore (like 999).
+                true,              					// BOOLEAN: Whether or not to keep the heli flying around as a gunship.
+		        [20435.7,11690.3,0],      			// OBJECT or ARRAY (OPTIONAL - Position2D or 3D): The location to drop the reinforcements at. The drop point will default to the group leader.
+		        "I_Heli_light_03_dynamicLoadout_F"
+				]
 		],
-	    [
+	[
 		_group,			// pass the group
 		[
 			[
-				-1,		// Let's limit number of units instead...
+				1,		// Only 2 "waves" (2 vehicles can spawn as reinforcement)
 				0
 			],
 			[
-				20,	// Maximum 100 units can be given as reinforcements.
+				-1,		// No need to limit the number of units since we're limiting "waves"
 				0
 			]
 		],
 		[
-			120,		// About a 4 minute delay between reinforcements.
+			90,		// At least a 1 1/2 minute delay between reinforcements.
 			diag_tickTime
 		],
-		_AISoldierSpawnLocations,
+		_pos,	
 		"random",
-		_difficulty,
+		"hardcore",
 		_side,
-		"reinforce",
-		[
-			20,			// Reinforcements will only trigger if there's fewer than 10 members left in the group
-			10			// 7 reinforcement units per wave.
+		"heli_troopers",
+            [
+                20,                					// SCALAR: If the AI Group has fewer than "_AICount" living units, then the group will receive reinforcements.
+                false,             					// BOOLEAN: Whether or not to eject Fire-From-Vehicle (FFV) gunners.
+                10,              					// SCALAR: Maximum number of AI to eject from the aircraft. Set to a really high # to ignore (like 999).
+                true,              					// BOOLEAN: Whether or not to keep the heli flying around as a gunship.
+		        [20432.7,11690.3,25],      			// OBJECT or ARRAY (OPTIONAL - Position2D or 3D): The location to drop the reinforcements at. The drop point will default to the group leader.
+		        "rhs_uh1h_hidf_gunship"             // CLASS of heli to spawn 
+				]
 		]
-	]
 ];
 
 _vehicle setVariable ["ExileMoney", _cash,true];
@@ -300,7 +273,7 @@ _added =
 	[
 		[
 			"kill",
-			[_group,_group3]
+			[_group]
 		],
 		[
 			"playerNear",
