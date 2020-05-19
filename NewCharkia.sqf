@@ -1,8 +1,7 @@
 /*
 	"Charkia Infiltration" v1.0 static mission for Altis.
-	Created by [-SoL-]Cory using templates by eraser1
-	19 years of CiC
-	hardcore - reworked by [CiC]red_ned http://cic-gaming.co.uk
+	Created by [-SoL-]Cory & Smrdo 
+	hardcore - Single difficulty mission file 
 */
 
 // Create Buildings - this is so roadblocks only appear during mission
@@ -201,7 +200,7 @@ _groupReinforcementsInfo =
 		_group,			// pass the group
 		[
 			[
-				1,		// Only 2 "waves" (2 vehicles can spawn as reinforcement)
+				2,		// Only 2 "waves" (2 vehicles can spawn as reinforcement)
 				0
 			],
 			[
@@ -210,7 +209,7 @@ _groupReinforcementsInfo =
 			]
 		],
 		[
-			90,		// At least a 1 1/2 minute delay between reinforcements.
+			120,		// At least a 2 minute delay between reinforcements.
 			diag_tickTime
 		],
 		_pos,	
